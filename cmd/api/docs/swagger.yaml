@@ -1,0 +1,10 @@
+basePath: /
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a server for generating and verifying 2FA codes using a layered
+    architecture.
+  title: 2FA Code Generator API
+  version: "2.0"
+paths: {}
+swagger: "2.0"
