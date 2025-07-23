@@ -5,10 +5,10 @@ import (
 	"log"
 	"net/http"
 
-	_ "main/docs" // Import generated docs by swag
-	"main/handler"
-	"main/internal/store"
-	"main/service"
+	_ "auth-code-generator/docs" // Import generated docs by swag
+	"auth-code-generator/handler"
+	"auth-code-generator/internal/store"
+	"auth-code-generator/service"
 
 	httpSwagger "github.com/swaggo/http-swagger"
 )
@@ -19,7 +19,10 @@ import (
 // @host localhost:8080
 // @BasePath /
 func main() {
-	codeStore := store.NewInMemoryStore()
+	codeStore, err := store.NewSqliteStore("./2fa.db")
+	if err != nil {
+		log.Fatalf("Could not initialize database: %v", err)
+	}
 	codeService := service.NewCodeService(codeStore)
 	codeHandler := handler.NewCodeHandler(codeService)
 

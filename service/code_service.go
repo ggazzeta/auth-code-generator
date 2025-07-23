@@ -1,15 +1,15 @@
 package service
 
 import (
+	"auth-code-generator/internal/store"
+	"auth-code-generator/pkg/models"
 	"fmt"
 	"hash/fnv"
-	"main/internal/store"
-	"main/pkg/models"
 	"math/rand"
 	"time"
 )
 
-const validitySeconds = 30
+const validitySeconds = 60
 
 type CodeService interface {
 	Generate(userID, userEmail string) (models.StoredCode, error)
@@ -25,14 +25,9 @@ func NewCodeService(r store.CodeRepository) CodeService {
 }
 
 func (s *codeService) Generate(userID, userEmail string) (models.StoredCode, error) {
+
 	nowUTC := time.Now().UTC()
-	second := nowUTC.Second()
-	var windowStart time.Time
-	if second < 30 {
-		windowStart = nowUTC.Truncate(time.Minute)
-	} else {
-		windowStart = nowUTC.Truncate(time.Minute).Add(30 * time.Second)
-	}
+	windowStart := nowUTC.Truncate(time.Minute)
 
 	code, err := s.generateDeterministicCode(userID, windowStart)
 	if err != nil {

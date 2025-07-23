@@ -1,13 +1,13 @@
 package handler
 
 import (
+	"auth-code-generator/service"
 	"encoding/json"
-	"main/service"
 	"net/http"
 	"time"
 )
 
-const validitySeconds = 30
+const validitySeconds = 60
 
 type GenerateResponse struct {
 	Code        string    `json:"code"`
@@ -25,7 +25,7 @@ type VerifyResponse struct {
 }
 
 type CodeHandler struct {
-	service service.CodeService // Depends on the interface
+	service service.CodeService
 }
 
 func NewCodeHandler(s service.CodeService) *CodeHandler {
@@ -34,7 +34,7 @@ func NewCodeHandler(s service.CodeService) *CodeHandler {
 
 // GenerateCode godoc
 // @Summary Generate a new 2FA code
-// @Description Generates a new 6-digit code for a user, valid for a fixed 30-second UTC window.
+// @Description Generates a new 6-digit code for a user, valid for a fixed 60-second UTC window.
 // @ID generate-code
 // @Produce  json
 // @Param   userID    query   string  true  "User ID"

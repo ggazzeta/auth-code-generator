@@ -1,14 +1,9 @@
 package store
 
 import (
-	"main/pkg/models"
+	"auth-code-generator/pkg/models"
 	"sync"
 )
-
-type CodeRepository interface {
-	Save(code models.StoredCode) error
-	Get(userID string) (models.StoredCode, bool, error)
-}
 
 type InMemoryStore struct {
 	mu    sync.RWMutex
